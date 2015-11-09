@@ -28,10 +28,34 @@ void insertCar(int position_in_train, trainCar *start,std::string name) {
 	position->next = newCar;
 }
 
-void deleteCar(int position_in_train,trainCar *start) {
+void deleteCar(int position_in_train, trainCar *start) {
+	//okay, so i need to remove the links by reassigning the next pionter
+	trainCar *position = start;
 	
+	int car_number = 0;
+	while (car_number < position_in_train-1)
+	{
+		position = position->next;
+		car_number++;
+	}
+	trainCar *one_to_remove = position;
+	one_to_remove++;	
+	//position->next = one_to_remove->next;
+	//delete one_to_remove;
+	
+
+
 }
 int countCars(trainCar *start) {
+	int number = 0;
+	trainCar *position = start;
+	if (position !=0)
+		while (position->next != 0)
+		{
+			position->next;
+			number++;
+
+		}
 
 }
 
@@ -89,6 +113,8 @@ int main()
 	insertCar(2, root, "luggage car");
 	insertCar(12, root, "New Caboose 1");
 	insertCar(13, root, "New Caboose 2");
+	deleteCar(3, root);
+	countCars(root);
 
 
 
