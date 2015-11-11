@@ -22,15 +22,16 @@ void insertCar(int position_in_train, trainCar *start,std::string name) {
 		position = position->next;
 		car_number++;
 	}
-	// now we can do the switching
+	// now we can do the switching, new car is given the same as position's next
 	newCar->next = position->next;
-	//
+	//position's next is reassigned to newCar
 	position->next = newCar;
 }
 
 void deleteCar(int position_in_train, trainCar *start) {
 	//okay, so i need to remove the links by reassigning the next pionter
 	trainCar *position = start;
+	trainCar *one_to_remove = start;
 	
 	int car_number = 0;
 	while (car_number < position_in_train-1)
@@ -38,25 +39,33 @@ void deleteCar(int position_in_train, trainCar *start) {
 		position = position->next;
 		car_number++;
 	}
-	trainCar *one_to_remove = position;
-	one_to_remove++;	
-	//position->next = one_to_remove->next;
-	//delete one_to_remove;
+	car_number = 0;
+	while (car_number < position_in_train)
+	{
+		one_to_remove = one_to_remove->next;
+		car_number++;
+	}
+		
+	position->next = one_to_remove->next;
+	delete one_to_remove;
 	
 
 
 }
-int countCars(trainCar *start) {
+int countCars(trainCar *start) 
+{
 	int number = 0;
 	trainCar *position = start;
-	if (position !=0)
+	if (position != 0) 	
+	{
 		while (position->next != 0)
 		{
-			position->next;
+			position = position->next;
 			number++;
-
 		}
+		return number+1;
 
+	}
 }
 
 void printCars(trainCar *start) {
@@ -88,9 +97,9 @@ int main()
 	}
 	// We're at the end
 	// we'll add a new car at the end
-	//std::cout << "How many cars (including the caboose) should we add? " << std::endl;
-	int cars_to_add=10;
-	//std::cin >> cars_to_add;
+	std::cout << "How many cars (including the caboose) should we add? " << std::endl;
+	int cars_to_add;
+	std::cin >> cars_to_add;
 
 	for (int x = 1; x <= cars_to_add; x++) {
 		position->next = new trainCar;
@@ -106,21 +115,52 @@ int main()
 	}
 	
 
-	
+	// Let's insert a new car, but now with some user input
+	std::cout << "Do you want to insert a new car? y or n." << std::endl;
+	char answer;
+	std::cin >> answer;
+	char answer2;
+	do 
+	{
+		if (answer == 'y')
+		{
+			std::cout << "Where should we insert the car?" << std::endl;
+			int new_car_position;
+			std::cin >> new_car_position;
+			std::cout << "What should we call the new car? (no spaces)" << std::endl;
+			std::string new_car_name;
+			std::cin >> new_car_name;
+			insertCar(new_car_position, root, new_car_name);
+		}
+		std::cout << "Do you want to insert another? y or n" << std::endl;
+		std::cin >> answer2;
 
-	// Let's insert a new car
-	insertCar(5, root, "Dining Car");
-	insertCar(2, root, "luggage car");
-	insertCar(12, root, "New Caboose 1");
-	insertCar(13, root, "New Caboose 2");
-	deleteCar(3, root);
-	countCars(root);
+	} while (answer2=='y');
 
-
+	//Let's delete some cars
+	std::cout << "Do you want to delete a car?" << std::endl;
+	char answer3;
+	char answer4;
+	std::cin >> answer3;
+	do
+	{
+		if (answer3 == 'y')
+		{
+			std::cout << "Which car should we delete?" << std::endl;
+			int deleted_car_position;
+			std::cin >> deleted_car_position;
+			deleteCar(deleted_car_position, root);
+		}
+		std::cout << "Do you want to delete another? y or n" << std::endl;
+		std::cin >> answer4;
+	} while (answer4 == 'y');
 
 	position = root;
+	//Let's see what the trail looks like now
+	std::cout << "Here's what the train loooks like:" << std::endl;
 	printCars(root);
-	
+	//and let's see how many there are
+	std::cout << "The number of cars is " << countCars(root) << std::endl;
 
 	system("Pause");
 }
